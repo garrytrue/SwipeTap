@@ -20,13 +20,15 @@ public class SwipeHelper extends GestureDetector.SimpleOnGestureListener {
     private OnUpperViewGestureListener listener;
 
 
-    private SwipeHelper(View itemView, OnUpperViewGestureListener listener) {
-        this.swipedView = itemView.findViewById(R.id.swiped_view);
+    private SwipeHelper(OnUpperViewGestureListener listener) {
         this.listener = listener;
     }
 
-    public static SwipeHelper makeSwipeHelper(View swipedItem, OnUpperViewGestureListener listener) {
-        return new SwipeHelper(swipedItem, listener);
+    public static SwipeHelper makeSwipeHelper( OnUpperViewGestureListener listener) {
+        return new SwipeHelper(listener);
+    }
+    public void setTargetView(View targetView){
+        swipedView = targetView.findViewById(R.id.swiped_view);
     }
 
     public void setTouchedPosition(int touchedPosition) {
@@ -35,7 +37,7 @@ public class SwipeHelper extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        listener.onClick(touchedPosition, isSelectMode);
+        listener.onClick(touchedPosition);
         if(isSelectMode){
             Log.d(TAG, "onSingleTapConfirmed: SELECT MODE");
         }else{
@@ -63,6 +65,6 @@ public class SwipeHelper extends GestureDetector.SimpleOnGestureListener {
     public void onLongPress(MotionEvent e) {
         Log.d(TAG, "onLongPress() called with: " + "e = [" + e + "]");
         isSelectMode = true;
-        listener.onClick(touchedPosition, isSelectMode);
+//        listener.onClick(touchedPosition, isSelectMode);
     }
 }
