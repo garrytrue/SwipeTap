@@ -6,8 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.tiv.swipetap.callback.OnDownViewClickListener;
-import com.tiv.swipetap.callback.RecyclerItemTouchListener;
+import com.tiv.swipetap.callback.OnItemViewClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +15,20 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private final OnDownViewClickListener itemsClickListener = new OnDownViewClickListener() {
+    private final OnItemViewClickListener itemsClickListener = new OnItemViewClickListener() {
         @Override
         public void onDownViewTap(int position) {
             Log.d(TAG, "onDownViewTap() called with: " + "position = [" + position + "]");
+        }
+
+        @Override
+        public void onUpperViewTap(int position) {
+            Log.d(TAG, "onUpperViewTap() called with: " + "position = [" + position + "]");
+        }
+
+        @Override
+        public void onUpperViewLongTap(int position) {
+            Log.d(TAG, "onUpperViewLongTap() called with: " + "position = [" + position + "]");
         }
     };
 
@@ -43,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private void initUI() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener());
         List<String > data = generateData();
         Log.d(TAG, "initUI: " + data);
         recyclerView.setAdapter(CustomAdapter.makeAdapter(data, itemsClickListener));

@@ -1,13 +1,12 @@
 package com.tiv.swipetap;
 
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tiv.swipetap.callback.OnDownViewClickListener;
+import com.tiv.swipetap.callback.OnItemViewClickListener;
 import com.tiv.swipetap.callback.OnUpperViewGestureListener;
 
 import java.lang.ref.WeakReference;
@@ -20,7 +19,7 @@ import java.util.List;
 public class CustomAdapter extends RecyclerView.Adapter<ItemHolder> {
     private static final String TAG = CustomAdapter.class.getSimpleName();
     private List<String> data;
-    private OnDownViewClickListener listener;
+    private OnItemViewClickListener listener;
     private List<Integer> selectedItems = new ArrayList<>();
     private WeakReference<ItemHolder> itemHolderWeakReference;
     private int swipedPos = -15;
@@ -29,6 +28,7 @@ public class CustomAdapter extends RecyclerView.Adapter<ItemHolder> {
     private final OnUpperViewGestureListener onUpperViewGestureListener = new OnUpperViewGestureListener() {
         @Override
         public void OnLongClick(int position) {
+            listener.onUpperViewLongTap(position);
             swipedPos = -15;
             Log.d(TAG, "OnLongClick() called with: " + "position = [" + position + "] isMultiSelect = " + isMultiSelect);
             if (isMultiSelect) {
@@ -51,7 +51,7 @@ public class CustomAdapter extends RecyclerView.Adapter<ItemHolder> {
                     selectedItems.remove((Integer) position);
                 }
                 notifyItemChanged(position);
-            }
+            } else {listener.onUpperViewTap(position);}
         }
 
         @Override
@@ -70,13 +70,13 @@ public class CustomAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     };
 
-    private CustomAdapter(List<String> data, OnDownViewClickListener listener) {
+    private CustomAdapter(List<String> data, OnItemViewClickListener listener) {
         this.data = data;
         this.listener = listener;
 
     }
 
-    public static CustomAdapter makeAdapter(List<String> data, OnDownViewClickListener listener) {
+    public static CustomAdapter makeAdapter(List<String> data, OnItemViewClickListener listener) {
         return new CustomAdapter(data, listener);
     }
 

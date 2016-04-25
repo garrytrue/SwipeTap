@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.tiv.swipetap.callback.OnDownViewClickListener;
+import com.tiv.swipetap.callback.OnItemViewClickListener;
 import com.tiv.swipetap.callback.OnUpperViewGestureListener;
 
 /**
@@ -18,21 +18,20 @@ public class ItemHolder extends RecyclerView.ViewHolder {
     private static final String TAG = ItemHolder.class.getSimpleName();
     private View swipedView, downView;
     private TextView swipedViewTextLabel;
-    private SwipeHelper swipeHelper;
     private OnUpperViewGestureListener onUpperViewGestureListener;
 
-    private ItemHolder(View itemView, OnDownViewClickListener listener, OnUpperViewGestureListener onUpperViewGestureListener) {
+    private ItemHolder(View itemView, OnItemViewClickListener listener, OnUpperViewGestureListener onUpperViewGestureListener) {
         super(itemView);
         initView(itemView, listener);
         this.onUpperViewGestureListener = onUpperViewGestureListener;
 
     }
 
-    public static ItemHolder makeHolder(View item, OnDownViewClickListener listener, OnUpperViewGestureListener onUpperViewGestureListener) {
+    public static ItemHolder makeHolder(View item, OnItemViewClickListener listener, OnUpperViewGestureListener onUpperViewGestureListener) {
         return new ItemHolder(item, listener, onUpperViewGestureListener);
     }
 
-    private void initView(View itemView, final OnDownViewClickListener listener) {
+    private void initView(View itemView, final OnItemViewClickListener listener) {
         swipedView = itemView.findViewById(R.id.swiped_view);
         final GestureDetectorCompat gestureDetectorCompat = new GestureDetectorCompat(swipedView.getContext(), simpleOnGestureListener);
         swipedView.setOnTouchListener(new View.OnTouchListener() {
